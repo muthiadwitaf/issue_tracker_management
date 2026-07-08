@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum IssueStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  TESTING
+  DEPLOY
+  TESTED
+  REVIEWED
+  CLOSED
+}
+
+enum IssuePriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IssueEventType {
+  CREATED
+  COMMENT
+  STATUS_CHANGE
+  ASSIGNMENT_CHANGE
+  LABEL_CHANGE
+  START_DATE_CHANGE
+  DUE_DATE_CHANGE
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  reportedIssues Issue[]        @relation("ReportedIssues")
+  assignedIssues Issue[]        @relation("AssignedIssues")
+  events         IssueEvent[]
+  notifications  Notification[]
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  issues      Issue[]
+}
+
+model Issue {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String?
+  status      IssueStatus   @default(OPEN)
+  priority    IssuePriority @default(MEDIUM)
+  solution    String?
+  moduleName    String?
+  informantName String?
+  startDate   DateTime?
+  dueDate     DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  project     Project       @relation(fields: [projectId], references: [id])
+  projectId   Int
+
+  reporter    User?         @relation("ReportedIssues", fields: [reporterId], references: [id])
+  reporterId  Int?
+
+  assignee    User?         @relation("AssignedIssues", fields: [assigneeId], references: [id])
+  assigneeId  Int?
+
+  labels        IssueLabel[]
+  events        IssueEvent[]
+  notifications Notification[]
+}
+
+model Label {
+  id     Int          @id @default(autoincrement())
+  name   String       @unique
+  color  String       @default("#5C6B7A")
+  issues IssueLabel[]
+}
+
+model IssueLabel {
+  issueId Int
+  labelId Int
+
+  issue   Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  label   Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([issueId, labelId])
+}
+
+model IssueEvent {
+  id        Int            @id @default(autoincrement())
+  type      IssueEventType
+  body      String?
+  detail    String?
+  createdAt DateTime       @default(now())
+
+  issue     Issue          @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  issueId   Int
+
+  actor     User?          @relation(fields: [actorId], references: [id])
+  actorId   Int?
+
+  attachments IssueAttachment[]
+}
+
+model IssueAttachment {
+  id           Int      @id @default(autoincrement())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  createdAt    DateTime @default(now())
+
+  event   IssueEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId Int
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+
+  issue     Issue?   @relation(fields: [issueId], references: [id])
+  issueId   Int?
+}
