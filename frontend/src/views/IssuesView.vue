@@ -58,6 +58,25 @@ async function quickAssign(issue, assigneeId) {
   await issuesStore.assign(issue.id, assigneeId);
   notify('Penanggung jawab berhasil diperbarui');
 }
+
+// Menutup dropdown status/penanggung jawab yang mungkin masih terbuka di tabel
+// sebelum membuka dialog baru — kalau tidak, menu itu tetap aktif dan tampilannya
+// bertumpuk aneh di atas dialog. blur() saja tidak cukup untuk menutup menu
+// Vuetify, jadi kita kirim juga tombol Escape yang memang ditangani v-overlay.
+function closeOpenMenus() {
+  document.activeElement?.blur();
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+}
+
+function openIssueDialog() {
+  closeOpenMenus();
+  dialogOpen.value = true;
+}
+
+function openLabelManager() {
+  closeOpenMenus();
+  labelManagerOpen.value = true;
+}
 </script>
 
 <template>
@@ -68,10 +87,10 @@ async function quickAssign(issue, assigneeId) {
         <p class="text-body-2 text-medium-emphasis">{{ issuesStore.items.length }} issue ditemukan</p>
       </div>
       <v-spacer />
-      <v-btn variant="outlined" prepend-icon="mdi-tag-outline" class="mr-2" @click="labelManagerOpen = true">
+      <v-btn variant="outlined" prepend-icon="mdi-tag-outline" class="mr-2" @click="openLabelManager">
         Kelola Kategori
       </v-btn>
-      <v-btn color="primary" prepend-icon="mdi-plus" variant="flat" @click="dialogOpen = true">Issue Baru</v-btn>
+      <v-btn color="primary" prepend-icon="mdi-plus" variant="flat" @click="openIssueDialog">Issue Baru</v-btn>
     </div>
 
     <v-card variant="flat" border class="mb-4 pa-3">
