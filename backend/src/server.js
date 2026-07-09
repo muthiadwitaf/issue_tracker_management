@@ -15,7 +15,14 @@ const auth = require('./middleware/auth');
 
 const app = express();
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
+// Vite auto-increments the dev server port (5173, 5174, ...) whenever the default
+// is already taken, which used to get silently blocked by CORS. Allow any
+// localhost/127.0.0.1 port in dev; set CORS_ORIGIN explicitly to lock this down.
+const corsOrigin = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
+  : /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/;
+
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 app.use('/uploads', express.static(uploadsDir));
 

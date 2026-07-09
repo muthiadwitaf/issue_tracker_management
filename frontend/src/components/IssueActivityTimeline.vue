@@ -70,7 +70,7 @@ async function submitComment() {
           <v-avatar v-else :size="20" color="secondary" variant="tonal" class="mr-2">
             <v-icon icon="mdi-cog-outline" size="12" />
           </v-avatar>
-          <span class="font-weight-medium text-body-2 mr-2">{{ event.actor?.name || 'System' }}</span>
+          <span class="font-weight-medium text-body-2 mr-2">{{ event.actor?.name || 'Sistem' }}</span>
           <span class="text-caption text-medium-emphasis">{{ formatTime(event.createdAt) }}</span>
         </div>
         <div v-if="event.type === 'COMMENT'" class="text-body-2">{{ event.body }}</div>

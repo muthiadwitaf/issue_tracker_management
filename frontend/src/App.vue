@@ -19,7 +19,9 @@ const isDark = ref(theme.global.name.value === 'dark');
 const usersStore = useUsersStore();
 const auth = useAuthStore();
 
-const isLoginRoute = computed(() => route.name === 'login');
+const showsLoginScreen = computed(
+  () => route.name === 'login' || (route.name === 'home' && !auth.isAuthenticated),
+);
 
 onMounted(async () => {
   await auth.restoreSession();
@@ -40,15 +42,15 @@ function logout() {
 
 const navItems = [
   { title: 'Dashboard', icon: 'mdi-view-dashboard-outline', to: '/' },
-  { title: 'Projects', icon: 'mdi-folder-multiple-outline', to: '/projects' },
-  { title: 'Issues', icon: 'mdi-alert-circle-outline', to: '/issues' },
-  { title: 'Users', icon: 'mdi-account-group-outline', to: '/users' },
+  { title: 'Proyek', icon: 'mdi-folder-multiple-outline', to: '/projects' },
+  { title: 'Issue', icon: 'mdi-alert-circle-outline', to: '/issues' },
+  { title: 'Pengguna', icon: 'mdi-account-group-outline', to: '/users' },
 ];
 </script>
 
 <template>
   <v-app>
-    <template v-if="!isLoginRoute">
+    <template v-if="!showsLoginScreen">
       <v-app-bar color="primary" density="comfortable" elevation="2">
         <v-app-bar-nav-icon @click="drawer = !drawer" />
         <v-icon icon="mdi-clipboard-text-clock-outline" class="mr-2" />
@@ -79,7 +81,7 @@ const navItems = [
             <div class="font-weight-medium text-truncate">{{ auth.user.name }}</div>
             <div class="text-caption text-medium-emphasis text-truncate">{{ auth.user.email }}</div>
           </div>
-          <v-btn icon="mdi-logout" variant="text" size="small" title="Logout" @click="logout" />
+          <v-btn icon="mdi-logout" variant="text" size="small" title="Keluar" @click="logout" />
         </div>
         <v-divider />
         <v-list nav class="pa-2">
@@ -97,7 +99,7 @@ const navItems = [
     </template>
 
     <v-main>
-      <v-container v-if="!isLoginRoute" fluid class="pa-6">
+      <v-container v-if="!showsLoginScreen" fluid class="pa-6">
         <router-view />
       </v-container>
       <router-view v-else />

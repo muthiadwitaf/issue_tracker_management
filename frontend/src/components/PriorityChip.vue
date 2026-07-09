@@ -1,28 +1,13 @@
 <script setup>
-defineProps({
+import { PRIORITY_OPTIONS } from '../utils/issueOptions';
+
+const props = defineProps({
   priority: { type: String, required: true },
 });
 
-const colorMap = {
-  LOW: 'priorityLow',
-  MEDIUM: 'priorityMedium',
-  HIGH: 'priorityHigh',
-  CRITICAL: 'priorityCritical',
-};
-
-const iconMap = {
-  LOW: 'mdi-chevron-down',
-  MEDIUM: 'mdi-equal',
-  HIGH: 'mdi-chevron-up',
-  CRITICAL: 'mdi-chevron-double-up',
-};
-
-const labelMap = {
-  LOW: 'Low',
-  MEDIUM: 'Medium',
-  HIGH: 'High',
-  CRITICAL: 'Critical',
-};
+const colorMap = Object.fromEntries(PRIORITY_OPTIONS.map((o) => [o.value, o.color]));
+const iconMap = Object.fromEntries(PRIORITY_OPTIONS.map((o) => [o.value, o.icon]));
+const labelMap = Object.fromEntries(PRIORITY_OPTIONS.map((o) => [o.value, o.title]));
 </script>
 
 <template>

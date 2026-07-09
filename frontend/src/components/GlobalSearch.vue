@@ -58,7 +58,7 @@ function goToProject(project) {
         <v-text-field
           v-model="query"
           autofocus
-          placeholder="Search issues & projects..."
+          placeholder="Cari issue & proyek..."
           density="compact"
           hide-details
           variant="solo-filled"
@@ -69,7 +69,7 @@ function goToProject(project) {
         />
       </v-toolbar>
       <v-list v-if="results.issues.length || results.projects.length">
-        <v-list-subheader v-if="results.projects.length">Projects</v-list-subheader>
+        <v-list-subheader v-if="results.projects.length">Proyek</v-list-subheader>
         <v-list-item
           v-for="project in results.projects"
           :key="`p-${project.id}`"
@@ -77,7 +77,7 @@ function goToProject(project) {
           prepend-icon="mdi-folder-outline"
           @click="goToProject(project)"
         />
-        <v-list-subheader v-if="results.issues.length">Issues</v-list-subheader>
+        <v-list-subheader v-if="results.issues.length">Issue</v-list-subheader>
         <v-list-item
           v-for="issue in results.issues"
           :key="`i-${issue.id}`"
@@ -98,7 +98,7 @@ function goToProject(project) {
       <v-text-field
         v-bind="menuProps"
         v-model="query"
-        placeholder="Search issues & projects..."
+        placeholder="Cari issue & proyek..."
         prepend-inner-icon="mdi-magnify"
         density="compact"
         hide-details
@@ -111,7 +111,7 @@ function goToProject(project) {
     </template>
     <v-card>
       <v-list v-if="results.issues.length || results.projects.length" density="compact">
-        <v-list-subheader v-if="results.projects.length">Projects</v-list-subheader>
+        <v-list-subheader v-if="results.projects.length">Proyek</v-list-subheader>
         <v-list-item
           v-for="project in results.projects"
           :key="`p-${project.id}`"
@@ -119,7 +119,7 @@ function goToProject(project) {
           prepend-icon="mdi-folder-outline"
           @click="goToProject(project)"
         />
-        <v-list-subheader v-if="results.issues.length">Issues</v-list-subheader>
+        <v-list-subheader v-if="results.issues.length">Issue</v-list-subheader>
         <v-list-item
           v-for="issue in results.issues"
           :key="`i-${issue.id}`"

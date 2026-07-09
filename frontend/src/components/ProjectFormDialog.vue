@@ -34,15 +34,15 @@ function save() {
 <template>
   <v-dialog :model-value="modelValue" max-width="500" @update:model-value="emit('update:modelValue', $event)">
     <v-card>
-      <v-card-title>{{ project ? 'Edit Project' : 'New Project' }}</v-card-title>
+      <v-card-title>{{ project ? 'Edit Proyek' : 'Proyek Baru' }}</v-card-title>
       <v-card-text>
-        <v-text-field v-model="form.name" label="Project name" autofocus />
-        <v-textarea v-model="form.description" label="Description" rows="3" />
+        <v-text-field v-model="form.name" label="Nama Proyek" autofocus />
+        <v-textarea v-model="form.description" label="Deskripsi" rows="3" />
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="text" @click="close">Cancel</v-btn>
-        <v-btn color="primary" variant="flat" :disabled="!form.name" @click="save">Save</v-btn>
+        <v-btn variant="text" @click="close">Batal</v-btn>
+        <v-btn color="primary" variant="flat" :disabled="!form.name" @click="save">Simpan</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

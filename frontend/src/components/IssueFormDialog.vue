@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import LabelPicker from './LabelPicker.vue';
 import { useAuthStore } from '../stores/auth';
+import { PRIORITY_OPTIONS } from '../utils/issueOptions';
 
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
@@ -12,8 +13,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue', 'save']);
-
-const priorities = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
 
 const auth = useAuthStore();
 
@@ -80,31 +79,31 @@ function save() {
 <template>
   <v-dialog :model-value="modelValue" max-width="600" @update:model-value="emit('update:modelValue', $event)">
     <v-card>
-      <v-card-title>{{ issue ? 'Edit Issue' : 'New Issue' }}</v-card-title>
+      <v-card-title>{{ issue ? 'Edit Issue' : 'Issue Baru' }}</v-card-title>
       <v-card-text>
-        <v-text-field v-model="form.title" label="Title" autofocus />
+        <v-text-field v-model="form.title" label="Judul" autofocus />
         <v-text-field
           v-model="form.moduleName"
-          label="Module/Function Name"
+          label="Nama Modul/Fungsi"
           prepend-inner-icon="mdi-puzzle-outline"
-          placeholder="e.g. Payroll Calculation, Login API"
+          placeholder="cth. Perhitungan Payroll, API Login"
         />
-        <v-textarea v-model="form.description" label="Description" rows="3" />
+        <v-textarea v-model="form.description" label="Deskripsi" rows="3" />
         <v-select
           v-if="!fixedProjectId"
           v-model="form.projectId"
           :items="projects"
           item-title="name"
           item-value="id"
-          label="Project"
+          label="Proyek"
         />
-        <v-select v-model="form.priority" :items="priorities" label="Priority" />
+        <v-select v-model="form.priority" :items="PRIORITY_OPTIONS" item-title="title" item-value="value" label="Prioritas" />
         <v-row dense>
           <v-col cols="6">
             <v-text-field
               v-model="form.startDate"
               type="date"
-              label="Start date"
+              label="Tanggal mulai"
               prepend-inner-icon="mdi-calendar-start-outline"
             />
           </v-col>
@@ -112,7 +111,7 @@ function save() {
             <v-text-field
               v-model="form.dueDate"
               type="date"
-              label="Due date"
+              label="Tanggal tenggat"
               prepend-inner-icon="mdi-calendar-end-outline"
             />
           </v-col>
@@ -120,11 +119,11 @@ function save() {
         <LabelPicker v-model="form.labelIds" />
 
         <v-alert v-if="!issue" type="info" variant="tonal" density="compact" class="mb-4">
-          Reporter: <strong>{{ auth.user?.name }}</strong> (otomatis dari user yang sedang login)
+          Pelapor: <strong>{{ auth.user?.name }}</strong> (otomatis dari user yang sedang login)
         </v-alert>
         <v-text-field
           v-model="form.informantName"
-          label="Informant"
+          label="Informan"
           prepend-inner-icon="mdi-account-voice"
           placeholder="Nama/instansi yang menginfokan, mis. User Dashboard Polda Jabar"
           hint="Isi jika yang melaporkan bukan reporter sistem (mis. user dari instansi lain)"
@@ -136,14 +135,14 @@ function save() {
           :items="users"
           item-title="name"
           item-value="id"
-          label="Assignee (programmer)"
+          label="Penanggung Jawab (programmer)"
           clearable
           class="mt-4"
         />
         <v-file-input
           v-if="!issue"
           v-model="form.files"
-          label="Evidence (screenshots, logs, dll.)"
+          label="Bukti (screenshot, log, dll.)"
           prepend-icon="mdi-paperclip"
           multiple
           chips
@@ -153,8 +152,8 @@ function save() {
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="text" @click="close">Cancel</v-btn>
-        <v-btn color="primary" variant="flat" :disabled="!form.title || !form.projectId" @click="save">Save</v-btn>
+        <v-btn variant="text" @click="close">Batal</v-btn>
+        <v-btn color="primary" variant="flat" :disabled="!form.title || !form.projectId" @click="save">Simpan</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

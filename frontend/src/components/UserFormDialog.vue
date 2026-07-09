@@ -36,13 +36,13 @@ function save() {
 <template>
   <v-dialog :model-value="modelValue" max-width="450" @update:model-value="emit('update:modelValue', $event)">
     <v-card>
-      <v-card-title>{{ user ? 'Edit User' : 'New User' }}</v-card-title>
+      <v-card-title>{{ user ? 'Edit Pengguna' : 'Pengguna Baru' }}</v-card-title>
       <v-card-text>
-        <v-text-field v-model="form.name" label="Name" autofocus />
+        <v-text-field v-model="form.name" label="Nama" autofocus />
         <v-text-field v-model="form.email" label="Email" type="email" />
         <v-text-field
           v-model="form.password"
-          label="Password"
+          label="Kata Sandi"
           type="password"
           :placeholder="user ? 'Kosongkan jika tidak ingin ganti' : ''"
           :hint="user ? 'Kosongkan jika tidak ingin ganti password' : 'Wajib diisi untuk akun baru'"
@@ -51,14 +51,14 @@ function save() {
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="text" @click="close">Cancel</v-btn>
+        <v-btn variant="text" @click="close">Batal</v-btn>
         <v-btn
           color="primary"
           variant="flat"
           :disabled="!form.name || !form.email || (!user && !form.password)"
           @click="save"
         >
-          Save
+          Simpan
         </v-btn>
       </v-card-actions>
     </v-card>
