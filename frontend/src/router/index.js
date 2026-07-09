@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import DashboardView from '../views/DashboardView.vue';
+import HomeView from '../views/HomeView.vue';
 import ProjectsView from '../views/ProjectsView.vue';
 import ProjectDetailView from '../views/ProjectDetailView.vue';
 import IssuesView from '../views/IssuesView.vue';
@@ -12,7 +12,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/login', name: 'login', component: LoginView, meta: { public: true } },
-    { path: '/', name: 'dashboard', component: DashboardView },
+    { path: '/', name: 'home', component: HomeView, meta: { public: true } },
     { path: '/projects', name: 'projects', component: ProjectsView },
     { path: '/projects/:id', name: 'project-detail', component: ProjectDetailView, props: true },
     { path: '/issues', name: 'issues', component: IssuesView },
@@ -24,7 +24,8 @@ const router = createRouter({
 router.beforeEach((to) => {
   const auth = useAuthStore();
   if (!to.meta.public && !auth.isAuthenticated) {
-    return { name: 'login', query: { redirect: to.fullPath } };
+    const query = to.fullPath === '/' ? {} : { redirect: to.fullPath };
+    return { name: 'login', query };
   }
   if (to.name === 'login' && auth.isAuthenticated) {
     return { path: '/' };

@@ -1,40 +1,13 @@
 <script setup>
-defineProps({
+import { STATUS_OPTIONS } from '../utils/issueOptions';
+
+const props = defineProps({
   status: { type: String, required: true },
 });
 
-const colorMap = {
-  OPEN: 'statusOpen',
-  IN_PROGRESS: 'statusInProgress',
-  RESOLVED: 'statusResolved',
-  TESTING: 'statusTesting',
-  DEPLOY: 'statusDeploy',
-  TESTED: 'statusTested',
-  REVIEWED: 'statusReviewed',
-  CLOSED: 'statusClosed',
-};
-
-const iconMap = {
-  OPEN: 'mdi-alert-circle-outline',
-  IN_PROGRESS: 'mdi-progress-clock',
-  RESOLVED: 'mdi-check-circle-outline',
-  TESTING: 'mdi-flask-outline',
-  DEPLOY: 'mdi-rocket-launch-outline',
-  TESTED: 'mdi-check-decagram-outline',
-  REVIEWED: 'mdi-eye-check-outline',
-  CLOSED: 'mdi-archive-outline',
-};
-
-const labelMap = {
-  OPEN: 'Open',
-  IN_PROGRESS: 'In Progress',
-  RESOLVED: 'Resolved',
-  TESTING: 'Testing',
-  DEPLOY: 'Deploy',
-  TESTED: 'Tested',
-  REVIEWED: 'Reviewed',
-  CLOSED: 'Closed',
-};
+const colorMap = Object.fromEntries(STATUS_OPTIONS.map((o) => [o.value, o.color]));
+const iconMap = Object.fromEntries(STATUS_OPTIONS.map((o) => [o.value, o.icon]));
+const labelMap = Object.fromEntries(STATUS_OPTIONS.map((o) => [o.value, o.title]));
 </script>
 
 <template>

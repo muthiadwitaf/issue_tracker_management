@@ -19,7 +19,7 @@ function respond(value) {
       <v-card-text>{{ state.message }}</v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn variant="text" @click="respond(false)">Cancel</v-btn>
+        <v-btn variant="text" @click="respond(false)">Batal</v-btn>
         <v-btn :color="state.color" variant="flat" @click="respond(true)">{{ state.confirmText }}</v-btn>
       </v-card-actions>
     </v-card>

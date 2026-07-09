@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { notify } from '../composables/snackbar';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
@@ -21,6 +22,9 @@ api.interceptors.response.use(
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';
       }
+    } else if (error.code !== 'ERR_CANCELED') {
+      const message = error.response?.data?.error || 'Terjadi kesalahan. Silakan coba lagi.';
+      notify(message, 'error');
     }
     return Promise.reject(error);
   },

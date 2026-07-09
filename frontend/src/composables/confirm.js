@@ -2,14 +2,14 @@ import { reactive } from 'vue';
 
 const state = reactive({
   show: false,
-  title: 'Confirm',
+  title: 'Konfirmasi',
   message: '',
-  confirmText: 'Delete',
+  confirmText: 'Hapus',
   color: 'error',
   resolve: null,
 });
 
-export function confirmDialog({ title = 'Confirm', message, confirmText = 'Delete', color = 'error' }) {
+export function confirmDialog({ title = 'Konfirmasi', message, confirmText = 'Hapus', color = 'error' }) {
   state.title = title;
   state.message = message;
   state.confirmText = confirmText;

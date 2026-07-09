@@ -26,21 +26,21 @@ function openEdit(project) {
 async function handleSave(payload) {
   if (editingProject.value) {
     await store.update(editingProject.value.id, payload);
-    notify('Project updated');
+    notify('Proyek berhasil diperbarui');
   } else {
     await store.create(payload);
-    notify('Project created');
+    notify('Proyek berhasil dibuat');
   }
 }
 
 async function handleDelete(project) {
   const ok = await confirmDialog({
-    title: 'Delete project',
-    message: `Delete project "${project.name}"? This also removes its issues.`,
+    title: 'Hapus Proyek',
+    message: `Hapus proyek "${project.name}"? Semua issue di dalamnya juga akan terhapus.`,
   });
   if (ok) {
     await store.remove(project.id);
-    notify('Project deleted', 'info');
+    notify('Proyek berhasil dihapus', 'info');
   }
 }
 </script>
@@ -49,11 +49,11 @@ async function handleDelete(project) {
   <div>
     <div class="d-flex align-center mb-6">
       <div>
-        <h1 class="text-h5 font-weight-medium">Projects</h1>
-        <p class="text-body-2 text-medium-emphasis">{{ store.items.length }} total</p>
+        <h1 class="text-h5 font-weight-medium">Proyek</h1>
+        <p class="text-body-2 text-medium-emphasis">{{ store.items.length }} proyek</p>
       </div>
       <v-spacer />
-      <v-btn color="primary" prepend-icon="mdi-plus" variant="flat" @click="openCreate">New Project</v-btn>
+      <v-btn color="primary" prepend-icon="mdi-plus" variant="flat" @click="openCreate">Proyek Baru</v-btn>
     </div>
 
     <v-row>
@@ -68,12 +68,12 @@ async function handleDelete(project) {
             <v-card-title style="cursor: pointer" @click="router.push(`/projects/${project.id}`)">
               {{ project.name }}
             </v-card-title>
-            <v-card-subtitle>{{ project._count?.issues || 0 }} issues</v-card-subtitle>
+            <v-card-subtitle>{{ project._count?.issues || 0 }} issue</v-card-subtitle>
           </v-card-item>
-          <v-card-text class="text-body-2 flex-grow-1">{{ project.description || 'No description' }}</v-card-text>
+          <v-card-text class="text-body-2 flex-grow-1">{{ project.description || 'Tidak ada deskripsi' }}</v-card-text>
           <v-divider />
           <v-card-actions>
-            <v-btn variant="text" color="primary" @click="router.push(`/projects/${project.id}`)">View</v-btn>
+            <v-btn variant="text" color="primary" @click="router.push(`/projects/${project.id}`)">Lihat</v-btn>
             <v-spacer />
             <v-btn icon="mdi-pencil-outline" variant="text" size="small" @click="openEdit(project)" />
             <v-btn icon="mdi-delete-outline" variant="text" size="small" color="error" @click="handleDelete(project)" />
@@ -82,7 +82,7 @@ async function handleDelete(project) {
       </v-col>
       <v-col v-if="!store.loading && !store.items.length" cols="12">
         <v-alert type="info" variant="tonal" icon="mdi-information-outline">
-          No projects yet. Create one to get started.
+          Belum ada proyek. Buat proyek baru untuk memulai.
         </v-alert>
       </v-col>
     </v-row>
